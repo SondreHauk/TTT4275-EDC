@@ -1,0 +1,58 @@
+%% ------------ Task 1 ------------ %%
+load fisheriris;
+
+% first 30 of each species (setosa, versicolor, virginica)
+training_set_meas = [meas(1:30, :); meas(51:80, :); meas(101:130, :)];
+training_set_spec = [species(1:30); species(51:80); species(101:130)];
+
+% last 20 of each species (setosa, versicolor, virginica)
+test_set_meas = [meas(31:50, :); meas(81:100, :); meas(131:150, :)];
+test_set_spec = [species(31:50); species(81:100); species(131:150)];
+
+% Define Setosa, Versicolor and Virinica as
+Se = [1 0 0]';
+Ve = [0 1 0]';
+Vi = [0 0 1]';
+
+%% Create training and test sets
+training_set_spes = [kron(ones(1, 30), Se), kron(ones(1, 30), Ve), kron(ones(1, 30), Vi)];
+x = [training_set_meas, ones(size(training_set_meas,1),1)];
+x_test = [test_set_meas, ones(size(test_set_meas,1),1)];
+
+%% Train Classifier
+% W = trainLinearClassifier(x, training_set_spes);
+% save('W.mat', 'W')
+% W = load("W.mat");
+
+%% Display result of classification test
+sigmoid = @(x) 1./(1 + exp(-x));
+[~, predicted_labels] = max(sigmoid(W * x_test'), [], 1);
+disp(predicted_labels);
+
+true_labels = [1 * ones(1,20), 2 * ones(1,20), 3 * ones(1,20)];
+
+C = confusionmat(true_labels, predicted_labels);
+
+   % Create confusion matrix
+    cm = confusionmat(true_labels, predicted_labels);
+    
+    % Display confusion matrix
+    disp('Confusion Matrix:');
+    disp(cm);
+    
+    % Plot confusion matrix
+    figure;
+    heatmap(class_labels, class_labels, cm, 'ColorMap', 'Blues', 'Title', 'Confusion Matrix');
+    
+    % Optionally, display precision, recall, and F1 score for each class
+    for i = 1:length(class_labels)
+        precision = cm(i,i) / sum(cm(:,i));   % True Positives / (True Positives + False Positives)
+        recall = cm(i,i) / sum(cm(i,:));      % True Positives / (True Positives + False Negatives)
+        f1_score = 2 * (precision * recall) / (precision + recall); % F1 Score: Harmonic mean of precision and recall
+        
+        fprintf('%s:\n', class_labels{i});
+        fprintf('  Precision: %.2f\n', precision);
+        fprintf('  Recall: %.2f\n', recall);
+        fprintf('  F1 Score: %.2f\n', f1_score);
+    end
+end

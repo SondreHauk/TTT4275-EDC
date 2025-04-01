@@ -13,7 +13,6 @@ N_te = N_da-N_tr;   % Length of test set
 C = 3; % number of classes
 F = 4; % number of features
 
-
 % first N of each species (setosa, versicolor, virginica)
 training_set_meas = [meas(1:N_tr, :); meas(N_da+1:N_da + N_tr, :); meas(2*N_da+1:2*N_da+N_tr, :)];
 training_set_spec = [species(1:N_tr); species(N_da+1:N_da + N_tr); species(2*N_da+1:2*N_da+N_tr)];
@@ -158,4 +157,3 @@ W1 = trainLinearClassifier(C, F+1, x, t);
 cm = confusionmat(true_labels, predicted_labels);
 fprintf("[task 2, line 142]\n Confusion matrix task 2, 1 label\n")
 disp(cm');
-

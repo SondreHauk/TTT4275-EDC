@@ -14,6 +14,7 @@ Se = [1 0 0]';
 Ve = [0 1 0]';
 Vi = [0 0 1]';
 
+disp("test")
 %% Create training and test sets
 training_set_spes = [kron(ones(1, 30), Se), kron(ones(1, 30), Ve), kron(ones(1, 30), Vi)];
 x = [training_set_meas, ones(size(training_set_meas,1),1)];
@@ -22,7 +23,7 @@ x_test = [test_set_meas, ones(size(test_set_meas,1),1)];
 %% Train Classifier
 % W = trainLinearClassifier(x, training_set_spes);
 % save('W.mat', 'W')
-% W = load("W.mat");
+W = load("W.mat").W;
 
 %% Display result of classification test
 sigmoid = @(x) 1./(1 + exp(-x));

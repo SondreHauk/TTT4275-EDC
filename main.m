@@ -13,6 +13,7 @@ N_te = N_da-N_tr;   % Length of test set
 C = 3; % number of classes
 F = 4; % number of features
 
+
 % first N of each species (setosa, versicolor, virginica)
 training_set_meas = [meas(1:N_tr, :); meas(N_da+1:N_da + N_tr, :); meas(2*N_da+1:2*N_da+N_tr, :)];
 training_set_spec = [species(1:N_tr); species(N_da+1:N_da + N_tr); species(2*N_da+1:2*N_da+N_tr)];
@@ -33,13 +34,14 @@ x_test = [test_set_meas, ones(size(test_set_meas,1),1)];
 
 %% Train Classifier
 W = trainLinearClassifier(C, F+1, x, training_set_spes);
+
 % save('W.mat', 'W')
 % W = load("W.mat").W;
 
 %% Display result of classification test
 sigmoid = @(x) 1./(1 + exp(-x));
 [~, predicted_labels] = max(sigmoid(W * x_test'), [], 1);
-disp(predicted_labels);
+% disp(predicted_labels);
 
 %% Make Confusion matrix
 C = 3;
@@ -105,6 +107,7 @@ W3 = trainLinearClassifier(C, F+1, x, t);
 
 % Display result of classification test
 sigmoid = @(x) 1./(1 + exp(-x));
+
 [~, predicted_labels] = max(sigmoid(W3 * x_test_3'), [], 1);
 %disp(predicted_labels);
 
@@ -136,10 +139,12 @@ W2 = trainLinearClassifier(C, F+1, x, t);
 cm = confusionmat(true_labels, predicted_labels);
 fprintf("[task 2, line 129]\n Confusion matrix task 2, 2 labels\n")
 disp(cm');
+
 %% Train classifier with 1 feature
 % By inspection: The petal width (feature 4) is the next feature with most overlap between
 % the classes and is therefore be removed for the following training. The
 % only remaining feature is now the petal length.
+
 F = 1;
 training_set_meas_1 = [training_set_meas_2(:, 1)];
 test_set_meas_1 = [test_set_meas_2(:, 1)];
@@ -153,3 +158,4 @@ W1 = trainLinearClassifier(C, F+1, x, t);
 cm = confusionmat(true_labels, predicted_labels);
 fprintf("[task 2, line 142]\n Confusion matrix task 2, 1 label\n")
 disp(cm');
+

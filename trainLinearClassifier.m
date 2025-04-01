@@ -1,6 +1,7 @@
 function W = trainLinearClassifier(N, M, x, t) 
     W = ones(N,M) + rand(N,M);
     alpha = 0.005;
+
     threshold = 10e-6;
     W_prev = W + 1;
     it = 0;
@@ -15,6 +16,7 @@ end
 function gradWMSE = gradientofMSE(W, x, t)
     sigmoid = @(x) 1./(1 + exp(-x));
     g = sigmoid(W * x');
+    disp(size(g));
     gradWMSE = ((g - t) .* g .* (1 - g)) * x;
 end
 

@@ -36,14 +36,17 @@ W = trainLinearClassifier(C, F+1, x, training_set_spes);
 % save('W.mat', 'W')
 % W = load("W.mat").W;
 
+
 %% Display result of classification test
 sigmoid = @(x) 1./(1 + exp(-x));
 [~, predicted_labels] = max(sigmoid(W * x_test'), [], 1);
+
 disp(predicted_labels);
 
 %% Make Confusion matrix
 C = 3;
 true_labels = [1 * ones(1,N_te), 2 * ones(1,N_te), 3 * ones(1,N_te)];
+
 
 % Create confusion matrix
 cm = confusionmat(true_labels, predicted_labels);
@@ -68,6 +71,7 @@ p3_c3 = meas(2*N_da:3*N_da,3);
 p4_c1 = meas(1:N_da,4);
 p4_c2 = meas(N_da+1:2*N_da,4);
 p4_c3 = meas(2*N_da+1:3*N_da,4);
+
 
 %% Plot histograms
 B = 25;
@@ -153,3 +157,4 @@ W1 = trainLinearClassifier(C, F+1, x_test_1, t);
 cm = confusionmat(true_labels, predicted_labels);
 fprintf("[task 2, line 142]\n Confusion matrix task 2, 1 label\n")
 disp(cm');
+

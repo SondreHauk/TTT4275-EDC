@@ -1,8 +1,8 @@
 function W = trainLinearClassifier(N, M, x, t) 
-    W = ones(N,M) + rand(N,M);
+    W = ones(N,M);
     alpha = 0.005;
     threshold = 10e-6;
-    W_prev = W + 1;
+    W_prev = W + rand(N,M);
     it = 0;
     while max(abs(W - W_prev), [], 'all') > threshold
         W_prev = W;

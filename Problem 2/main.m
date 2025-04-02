@@ -1,5 +1,5 @@
 %% Cleaning up Workspace
-%clear
+clear
 close all
 clc
 
@@ -16,33 +16,26 @@ N_tr = 60000;
 chunk_len = 1000;
 
 %% Nearest neighboor clasification
+% Run the classifier and save the result. 
+% nearest_neighboor = nearest_neighbor_classifier(test_data, training_data, training_label);
+% save("classified_images.mat", "nearest_neighboor");
 
-nearest_neighbor = -1*ones(N_te, 1);
-nearest_neighbor_temp_dist =  inf(chunk_len, 1);
-nearest_neighbor_temp_label = -1 * ones(chunk_len,1);
+% Load result from file instead of running the function
+nearest_neighboor = load("classified_images.mat").nearest_neighbor;
 
 
-for i = 0:(N_te/chunk_len - 1)
-    chunk_test_data = test_data(chunk_len*i+1 : chunk_len*(i+1), :);
+%% Plot misclassified images
+test_idx = 1:N_te;
+misclassified_idx = test_idx(nearest_neighboor ~= test_label);
 
-    for j = 0:(N_tr/chunk_len - 1)
-        chunk_training_data = training_data(chunk_len*j+1 : chunk_len*(j+1), :);
-        chunk_training_label = training_label(chunk_len*j+1 : chunk_len*(j+1), :);
-        
-        % E = dist(chunk_training_data, chunk_test_data');
-        E = dist(chunk_test_data, chunk_training_data');
-        [distance, idx] = min(E, [], 2);
-        
-        update_idx = distance < nearest_neighbor_temp_dist;
-        nearest_neighbor_temp_dist(update_idx) = distance(update_idx);        
-        nearest_neighbor_temp_label(update_idx) = chunk_training_label(idx(update_idx));
-        
-    end
-    fprintf("[NN, line 40] Temp label\n");
-    disp(nearest_neighbor_temp_label);
-    disp("")
-
-    nearest_neighbor(chunk_len*i+1:(i+1)*chunk_len) = nearest_neighbor_temp_label;
-    nearest_neighbor_temp_dist =  inf(chunk_len, 1);
-    nearest_neighbor_temp_label = -1 * ones(chunk_len,1);
+N_pictures_to_plot = 5;
+for i=1:N_pictures_to_plot
+    misclassified_image = zeros(28,28);
+    misclassified_image(:) = test_data(misclassified_idx(i), :);
+    image(misclassified_image');
+    clc;
+    fprintf("Picture number: %d\n", i);
+    fprintf("Classifier says it is a: %d\n", nearest_neighboor(misclassified_idx(i)));
+    fprintf("The real value is a: %d\n", test_label(misclassified_idx(i)));
+    pause(8);
 end

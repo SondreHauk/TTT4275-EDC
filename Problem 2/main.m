@@ -35,14 +35,14 @@ for i = 0:(N_te/chunk_len - 1)
         
         update_idx = distance < nearest_neighbor_temp_dist;
         nearest_neighbor_temp_dist(update_idx) = distance(update_idx);        
-        nearest_neighbor_temp_label(update_idx) = chunk_training_label(update_idx);
+        nearest_neighbor_temp_label(update_idx) = chunk_training_label(idx(update_idx));
         
     end
     fprintf("[NN, line 40] Temp label\n");
     disp(nearest_neighbor_temp_label);
     disp("")
 
-    nearest_neighbor(i*chunk_len+1:(i+1)*chunk_len) = nearest_neighbor_temp_label;
+    nearest_neighbor(chunk_len*i+1:(i+1)*chunk_len) = nearest_neighbor_temp_label;
     nearest_neighbor_temp_dist =  inf(chunk_len, 1);
     nearest_neighbor_temp_label = -1 * ones(chunk_len,1);
 end

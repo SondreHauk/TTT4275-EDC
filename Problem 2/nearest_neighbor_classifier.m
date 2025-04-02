@@ -1,11 +1,15 @@
-function nearest_neighbor = nearest_neighbor_classifier(test_data, training_data, training_label, chunk_len)
+function nearest_neighbor = nearest_neighbor_classifier( ...
+    test_data, ...
+    training_data, ...
+    training_label, ...
+    chunk_len)
+
     N_tr = size(training_data, 1);
     N_te = size(test_data, 1);
     
     nearest_neighbor = -1*ones(N_te, 1);
     nearest_neighbor_temp_dist =  inf(chunk_len, 1);
     nearest_neighbor_temp_label = -1 * ones(chunk_len,1);
-
 
     for i = 0:(N_te/chunk_len - 1)
         chunk_test_data = test_data(chunk_len*i+1 : chunk_len*(i+1), :);
@@ -23,9 +27,6 @@ function nearest_neighbor = nearest_neighbor_classifier(test_data, training_data
             nearest_neighbor_temp_label(update_idx) = chunk_training_label(idx(update_idx));
             
         end
-        fprintf("[NN, line 40] Temp label\n");
-        disp(nearest_neighbor_temp_label);
-        disp("")
     
         nearest_neighbor(chunk_len*i+1:(i+1)*chunk_len) = nearest_neighbor_temp_label;
         nearest_neighbor_temp_dist =  inf(chunk_len, 1);

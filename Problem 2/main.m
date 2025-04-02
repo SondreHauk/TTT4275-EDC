@@ -58,6 +58,9 @@ chunk_len_clustered = 40;
 nearest_neighboor_clustered = nearest_neighbor_classifier(test_data, C, C_label, chunk_len_clustered);
 
 
+%% K nearest neighbors
+K = 1;
+KNN = KNN_classifier(test_data, C, C_label, chunk_len_clustered, K);
 
 %% Sort values into sorted matrix
 % for i = 0:9

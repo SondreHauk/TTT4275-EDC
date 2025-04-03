@@ -53,12 +53,10 @@ W = trainLinearClassifier(C, F, x_train, training_set_spes);
 % save('W.mat', 'W')
 % W = load("W.mat").W;
 
-%% Predicted label for traning set
+%% Predicted label for training and test set
 sigmoid = @(x) 1./(1 + exp(-x));
-[~, pred_labels_train] = max(sigmoid(W * x_train'), [], 1);
 
-%% Predicted label for test set
-sigmoid = @(x) 1./(1 + exp(-x));
+[~, pred_labels_train] = max(sigmoid(W * x_train'), [], 1);
 [~, pred_labels_test] = max(sigmoid(W * x_test'), [], 1);
 
 %% Confusion matrixes for test and training set
@@ -83,8 +81,8 @@ pred_labels_test = categorical(class_labels(pred_labels_test));
 cm_train = confusionchart(true_labels_train, pred_labels_train, ...
     "Title","Training set");
 
-cm_test = confusionchart(true_labels_test, pred_labels_test, ...
-     "Title","Test set");
+%cm_test = confusionchart(true_labels_test, pred_labels_test, ...
+%  "Title","Test set");
 
 %% ------------ Task 2 ------------ %%
 p1_c1 = meas(1:N_da,1);
@@ -110,19 +108,19 @@ figure;
 subplot(2,2,1);
 histogram(p1_c1, B); hold on; histogram(p1_c2, B); hold on; histogram(p1_c3, B);
 xlabel('cm'); ylabel('frequency'); subtitle('Sepal length');
-xlim([0 8]); % Set x-axis limits from 0 to 8 cm
+xlim([0 8]);
 
 % Sepal width
 subplot(2,2,2);
 histogram(p2_c1, B); hold on; histogram(p2_c2, B); hold on; histogram(p2_c3, B);
 xlabel('cm'); ylabel('frequency'); subtitle('Sepal width');
-xlim([0 8]); % Set x-axis limits from 0 to 8 cm
+xlim([0 8]);
 
 % Petal length
 subplot(2,2,3); 
 histogram(p3_c1, B); hold on; histogram(p3_c2, B); hold on; histogram(p3_c3, B);
 xlabel('cm'); ylabel('frequency'); subtitle('Petal length');
-xlim([0 8]); % Set x-axis limits from 0 to 8 cm
+xlim([0 8]);
 
 % Petal width
 subplot(2,2,4);
@@ -138,17 +136,17 @@ legend('Setosa', 'Versicolor', 'Virginica');
 training_set_meas_3 = [training_set_feat(:,1) training_set_feat(:, 3:4)]; % Remove feature 2
 test_set_meas_3 = [test_set_feat(:,1) test_set_feat(:, 3:4)]; % Remove feature 2
 
-F = 3; % features reduced by one
+F = 3; % features reduced to three
 
 % Training set
 x_train_3 = [training_set_meas_3 ones(size(training_set_meas_3,1),1)];
 x_test_3 = [test_set_meas_3 ones(size(test_set_meas_3,1),1)];
 
-W3 = trainLinearClassifier(C, F, x_train_3, training_set_spes);
+W = trainLinearClassifier(C, F, x_train_3, training_set_spes);
 
 sigmoid = @(x) 1./(1 + exp(-x));
-[~, pred_labels_train] = max(sigmoid(W3 * x_train_3'), [], 1);
-[~, pred_labels_test] = max(sigmoid(W3 * x_test_3'), [], 1);
+[~, pred_labels_train] = max(sigmoid(W * x_train_3'), [], 1);
+[~, pred_labels_test] = max(sigmoid(W * x_test_3'), [], 1);
 
 pred_labels_train = categorical(class_labels(pred_labels_train));
 pred_labels_test = categorical(class_labels(pred_labels_test));
@@ -156,40 +154,59 @@ pred_labels_test = categorical(class_labels(pred_labels_test));
 cm_train = confusionchart(true_labels_train, pred_labels_train, ...
     "Title","Training set");
 
+%cm_test = confusionchart(true_labels_test, pred_labels_test, ...
+%    "Title", "Test set");
+
 
 %% Train classifier with 2 features
 % By inspection: The sepal length (feature 1) is the next feature with overlap between
 % the classes and is therefore be removed for the following training.
+
 training_set_meas_2 = [training_set_meas_3(:, 2:3)]; % Remove feature 1 and 2
 test_set_meas_2 = [test_set_meas_3(:, 2:3)]; % Remove feature 1 and 2
 
+F = 2; % features reduced to two
 
-F = 2; % features reduced by two
-x = [training_set_meas_2, ones(size(training_set_meas_2,1),1)];
+x_train_2 = [training_set_meas_2, ones(size(training_set_meas_2,1),1)];
 x_test_2 = [test_set_meas_2, ones(size(test_set_meas_2,1),1)];
-t = [kron(ones(1, N_tr), Se), kron(ones(1, N_tr), Ve), kron(ones(1, N_tr), Vi)];
 
-W2 = trainLinearClassifier(C, F, x, t);
-[~, pred_labels] = max(sigmoid(W2 * x_test_2'), [], 1);
-cm = confusionmat(true_labels, pred_labels);
-fprintf("[task 2, line 129]\n Confusion matrix task 2, 2 labels\n")
-disp(cm');
+W = trainLinearClassifier(C, F, x_train_2, training_set_spes);
+
+[~, pred_labels_train] = max(sigmoid(W * x_train_2'), [], 1);
+[~, pred_labels_test] = max(sigmoid(W * x_test_2'), [], 1);
+
+pred_labels_train = categorical(class_labels(pred_labels_train));
+pred_labels_test = categorical(class_labels(pred_labels_test));
+
+cm_train = confusionchart(true_labels_train, pred_labels_train, ...
+    "Title", "Training set");
+
+cm_test = confusionchart(true_labels_test, pred_labels_test, ...
+   "Title", "Test set");
 
 %% Train classifier with 1 feature
 % By inspection: The petal width (feature 4) is the next feature with most overlap between
 % the classes and is therefore be removed for the following training. The
 % only remaining feature is now the petal length.
 
-F = 1;
 training_set_meas_1 = [training_set_meas_2(:, 1)];
 test_set_meas_1 = [test_set_meas_2(:, 1)];
 
-x = [training_set_meas_1, ones(size(training_set_meas_1,1),1)];
+F = 1; % Features reduces to one
+
+x_train_1 = [training_set_meas_1, ones(size(training_set_meas_1,1),1)];
 x_test_1 = [test_set_meas_1, ones(size(test_set_meas_1,1),1)];
 
-t = [kron(ones(1, N_tr), Se), kron(ones(1, N_tr), Ve), kron(ones(1, N_tr), Vi)];
-W1 = trainLinearClassifier(C, F, x, t);
-[~, pred_labels] = max(sigmoid(W1 * x_test_1'), [], 1);
-cm = confusionmat(true_labels, pred_labels);
-fprintf("[task 2, line 142]\n Confusion matrix task 2, 1 label\n")
-disp(cm');
+W = trainLinearClassifier(C, F, x_train_1, training_set_spes);
+
+[~, pred_labels_train] = max(sigmoid(W * x_train_1'), [], 1);
+[~, pred_labels_test] = max(sigmoid(W * x_test_1'), [], 1);
+
+pred_labels_train = categorical(class_labels(pred_labels_train));
+pred_labels_test = categorical(class_labels(pred_labels_test));
+
+cm_train = confusionchart(true_labels_train, pred_labels_train, ...
+    "Title", "Training set");
+
+cm_test = confusionchart(true_labels_test, pred_labels_test, ...
+   "Title", "Test set");

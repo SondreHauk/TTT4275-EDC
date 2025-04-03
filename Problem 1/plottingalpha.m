@@ -4,19 +4,19 @@ alphas = [0.05, 0.01, 0.005];
 
 figure(1)
 subplot(2,1,1); hold on; % First subplot for gradient norm
-title('Convergence of Gradient Norm');
-xlabel('Iterations');
-ylabel('Gradient Norm');
+title('Convergence of Gradient Norm','FontSize',14);
+xlabel('Iterations', 'FontSize',14);
+ylabel('Gradient Norm', 'FontSize',14);
 grid on;
 
 subplot(2,1,2); hold on; % Second subplot for MSE
-title('Convergence of MSE');
-xlabel('Iterations');
-ylabel('Mean Squared Error');
+title('Convergence of MSE', 'FontSize',14);
+xlabel('Iterations', 'FontSize',14);
+ylabel('Mean Squared Error', 'FontSize',14);
 grid on;
 
 for i = 1:length(alphas)
-    [~, gradNorms, mseValues] = plotalpha(C, F+1, x_train, training_set_spes, alphas(i));
+    [~, gradNorms, mseValues] = plotalpha(C, F, x_train, training_set_spes, alphas(i));
     
     % Plot gradient norm
     subplot(2,1,1);
@@ -27,10 +27,10 @@ for i = 1:length(alphas)
     plot(1:length(mseValues), mseValues, 'LineWidth', 2);
     
 end
-legend('Alpha = 0.05', 'Alpha = 0.01', 'Alpha = 0.005');
+legend('alpha = 0.05', 'alpha = 0.01', 'alpha = 0.005', 'FontSize',14);
 
 function [W, gradNorms, mseValues] = plotalpha(N, M, x, t, alpha)
-    W = zeros(N, M);
+    W = zeros(N, M+1);
     %threshold = 5e-3;
     %W_prev = W + 1;
     %it = 0;

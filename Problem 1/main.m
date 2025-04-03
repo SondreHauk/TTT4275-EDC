@@ -107,27 +107,27 @@ figure;
 % Sepal length
 subplot(2,2,1);
 histogram(p1_c1, B); hold on; histogram(p1_c2, B); hold on; histogram(p1_c3, B);
-xlabel('cm'); ylabel('frequency'); subtitle('Sepal length');
+xlabel('cm'); ylabel('frequency'); subtitle('Sepal length', 'FontSize',14);
 xlim([0 8]);
 
 % Sepal width
 subplot(2,2,2);
 histogram(p2_c1, B); hold on; histogram(p2_c2, B); hold on; histogram(p2_c3, B);
-xlabel('cm'); ylabel('frequency'); subtitle('Sepal width');
+xlabel('cm'); ylabel('frequency'); subtitle('Sepal width', 'FontSize',14);
 xlim([0 8]);
 
 % Petal length
 subplot(2,2,3); 
 histogram(p3_c1, B); hold on; histogram(p3_c2, B); hold on; histogram(p3_c3, B);
-xlabel('cm'); ylabel('frequency'); subtitle('Petal length');
+xlabel('cm'); ylabel('frequency'); subtitle('Petal length', 'FontSize',14);
 xlim([0 8]);
 
 % Petal width
 subplot(2,2,4);
 histogram(p4_c1, 15); hold on; histogram(p4_c2, 15); hold on; histogram(p4_c3, 15);
-xlabel('cm'); ylabel('frequency'); subtitle('Petal width');
+xlabel('cm'); ylabel('frequency'); subtitle('Petal width', 'FontSize',14);
 xlim([0 8]); % Set x-axis limits from 0 to 8 cm
-legend('Setosa', 'Versicolor', 'Virginica');
+legend('Setosa', 'Versicolor', 'Virginica', 'FontSize',14);
 
 %% Train classifier with 3 features
 % By inspection: The sepal width (feature 2) is the feature with most overlap between

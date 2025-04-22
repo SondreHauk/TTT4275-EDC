@@ -32,12 +32,7 @@ nearest_neighboor = load("classified_images.mat").nearest_neighbor;
 
 %% Clustering
 M = 64; %Number of clusters for each class
-N_cluster_vectors = 6000;
 N_classes = 10;
-
-%% Sort training data
-training_data_sorted = zeros(60000, N_pixels);
-training_label_sorted = zeros(60000, 1);
 
 C = zeros(M*N_classes, N_pixels);
 C_label = zeros(M*N_classes, 1);
@@ -48,6 +43,7 @@ for i = 0:9
     idx_of_value_i = j(update_idx);
     K = training_data(idx_of_value_i, :); % All data of class i
 
+    % [idx, c] = kmeans(K, M, 'Replicates',3);
     [idx, c] = kmeans(K, M);
     C(i*M+1:(i+1)*M, :) = c;
     C_label(i*M+1:(i+1)*M, :) = i;
@@ -57,21 +53,13 @@ end
 chunk_len_clustered = 40;
 nearest_neighboor_clustered = nearest_neighbor_classifier(test_data, C, C_label, chunk_len_clustered);
 
+%% K nearest neighbor without clustered data set
+% K = 7;
+% KNN = KNN_classifier(test_data, training_data, training_label, chunk_len, K);
+% error_KNN_without_clustering = sum(KNN == test_label);
 
-%% K nearest neighbors
-K = 1;
+%% K nearest neighbors with clustered data set
+K = 7;
 KNN = KNN_classifier(test_data, C, C_label, chunk_len_clustered, K);
-
-%% Sort values into sorted matrix
-% for i = 0:9
-%     update_idx = (training_label == i);
-%     idx = 1:60000;
-%     idx_of_value_i = idx(update_idx);
-%     training_data_sorted(start_pos:end_pos, :) ... 
-%         = training_data(idx_of_value_i, :);
-%     training_label_sorted(start_pos:end_pos, :) ... 
-%         = training_label(idx_of_value_i, :);
-%     start_pos = end_pos + 1;
-%     end_pos = end_pos + sum(training_label == i+1);
-% end
+error_KNN_with_clustering = (N_te-sum((KNN == test_label)))/N_te;
 

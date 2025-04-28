@@ -81,8 +81,8 @@ pred_labels_test = categorical(class_labels(pred_labels_test));
 cm_train = confusionchart(true_labels_train, pred_labels_train, ...
     "Title","Training set");
 
-%cm_test = confusionchart(true_labels_test, pred_labels_test, ...
-%  "Title","Test set");
+cm_test = confusionchart(true_labels_test, pred_labels_test, ...
+  "Title","Test set");
 
 %% ------------ Task 2 ------------ %%
 p1_c1 = meas(1:N_da,1);
@@ -154,8 +154,8 @@ pred_labels_test = categorical(class_labels(pred_labels_test));
 cm_train = confusionchart(true_labels_train, pred_labels_train, ...
     "Title","Training set");
 
-%cm_test = confusionchart(true_labels_test, pred_labels_test, ...
-%    "Title", "Test set");
+cm_test = confusionchart(true_labels_test, pred_labels_test, ...
+    "Title", "Test set");
 
 
 %% Train classifier with 2 features
